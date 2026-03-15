@@ -44,5 +44,7 @@ INSERT INTO orders (id, customer_id, product, quantity, price, status, ordered_a
 (15, 5, 'Keyboard',         1,   89.99, 'shipped',   '2026-03-10 14:20:00'),
 (16, 4, 'Monitor',          1,  349.99, 'pending',   '2026-03-12 11:00:00');
 
-SELECT setval('customers_id_seq', (SELECT MAX(id) FROM customers));
-SELECT setval('orders_id_seq', (SELECT MAX(id) FROM orders));
+CREATE USER readonly_user WITH PASSWORD 'postgres';
+GRANT CONNECT ON DATABASE myapp TO readonly_user;
+GRANT USAGE ON SCHEMA public TO readonly_user;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO readonly_user;
